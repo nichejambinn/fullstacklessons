@@ -1,13 +1,24 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import axios from 'axios'
 import Note from './components/Note'
 
 // npx json-server --port 3001 --watch db.json
 
-const App = (props) => {
-  const [notes, setNotes] = useState(props.notes)
+const App = () => {
+  const [notes, setNotes] = useState([])
   const [newNote, setNewNote] = useState('')
   const [showAll, setShowAll] = useState(true)
 
+  useEffect(() => {
+    console.log('effect')
+    axios.get('http://localhost:3001/notes').then(response => {
+      console.log('promise fulfilled')
+      setNotes(response.data)
+    })
+  }, []) // array of params specify when to run effect - empty == 1x only
+
+  console.log('render', notes.length, 'notes')
+  
   const addNote = (event) => {
     event.preventDefault()
     const noteObject = {
