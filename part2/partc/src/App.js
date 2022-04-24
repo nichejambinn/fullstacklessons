@@ -1,6 +1,8 @@
 import { useState } from 'react'
 import Note from './components/Note'
 
+// npx json-server --port 3001 --watch db.json
+
 const App = (props) => {
   const [notes, setNotes] = useState(props.notes)
   const [newNote, setNewNote] = useState('')
