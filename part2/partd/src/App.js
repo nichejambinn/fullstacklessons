@@ -48,6 +48,10 @@ const App = () => {
       .then(returnedNote => {
         console.log(`importance of ${id} toggled`)
         setNotes(notes.map(note => note.id !== id ? note : returnedNote)) // map creates a new array
+      .catch(error => {
+        alert(`the note '${note.content}' was already deleted from the server`)
+        setNotes(notes.filter(note => note.id !== id))
+      })
     })
   }
 
