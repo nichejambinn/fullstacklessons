@@ -4,10 +4,23 @@ import Note from './components/Note'
 
 // npx json-server --port 3001 --watch db.json
 
+const Notification = ({ message }) => {
+  if (message === null) {
+    return null
+  }
+
+  return (
+    <div className='error'>
+      {message}
+    </div>
+  )
+}
+
 const App = () => {
   const [notes, setNotes] = useState([])
   const [newNote, setNewNote] = useState('')
   const [showAll, setShowAll] = useState(true)
+  const [errorMessage, setErrorMessage] = useState('some error happened...')
 
   useEffect(() => {
     console.log('effect')
@@ -50,7 +63,12 @@ const App = () => {
         setNotes(notes.map(note => note.id !== id ? note : returnedNote)) // map creates a new array
       })
       .catch(error => {
-        alert(`the note '${note.content}' was already deleted from the server`)
+        setErrorMessage(          
+          `Note '${note.content}' was already removed from server`        
+        )
+        setTimeout(() => {
+          setErrorMessage(null)
+        }, 5000)
         setNotes(notes.filter(note => note.id !== id))
       })
   }
@@ -67,6 +85,7 @@ const App = () => {
   return (
     <div>
       <h1>Notes</h1>
+      <Notification message={errorMessage} />
       <div>
         <button onClick={() => setShowAll(!showAll)}>
           show {showAll ? 'important' : 'all' }
